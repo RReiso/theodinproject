@@ -22,3 +22,18 @@ end
 d = C::M::N::D.new
 d.show_a
  #Output: 23451
+
+ #Accessibility of constants:
+module M
+  class C
+    X = 2
+    class D
+      module N
+        X = 1
+      end
+    end
+  end
+end
+puts M::C::D::N::X
+puts M::C::X
+#Output: 1,2
