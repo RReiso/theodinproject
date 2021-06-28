@@ -76,12 +76,12 @@ Painting.add_style_to_library("Cubism")
 paint1 = Painting.new("Impressionism")
 paint2 = Painting.new("Cubism")
 paint3 = Painting.new("Impressionism")
-puts "There are #{paint3.same_style_count} paintings in #{paint3.style} style."
-puts "There are #{Painting.total_count} paintigs total."
+puts "There are #{paint1.same_style_count} paintings in #{paint1.style} style."
+puts "There are #{Painting.total_count} paintings total."
 puts Painting.all_paintings
 # Drawing a new painting in Impressionism style!
 # Drawing a new painting in Cubism style!
 # Drawing a new painting in Impressionism style!
 # There are 2 paintings in Impressionism style.
-# There are 3 paintigs total.
+# There are 3 paintings total.
 # {"Impressionism"=>2, "Cubism"=>1}
