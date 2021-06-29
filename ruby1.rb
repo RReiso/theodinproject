@@ -85,3 +85,21 @@ puts Painting.all_paintings
 # There are 2 paintings in Impressionism style.
 # There are 3 paintings total.
 # {"Impressionism"=>2, "Cubism"=>1}
+
+# @variable and self variable in class definition
+class Person
+    attr_accessor :name
+    def initialize(name)
+        @name = name
+    end
+    def greet
+        puts "Hello #{@name}"      
+        puts  "Hello #{self.name}" #Calling method name on self (def name @name end) - from attr_acc.
+        puts "Hello #{name}" #Calling a name methof that returns @name
+    end
+end
+
+p1 = Person.new("John")
+p1.greet
+
+
