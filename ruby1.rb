@@ -86,7 +86,7 @@ puts Painting.all_paintings
 # There are 3 paintings total.
 # {"Impressionism"=>2, "Cubism"=>1}
 
-# @variable and self variable in class definition
+# @variable and self.method in class definition
 class Person
     attr_accessor :name
     def initialize(name)
@@ -103,3 +103,25 @@ p1 = Person.new("John")
 p1.greet
 
 
+#Exceptions
+def fussy_method(x)
+  raise ArgumentError, "I need a number under 10" unless x < 10 #instances of exception classes are raised (ArgumentError.new)
+end
+
+begin
+  fussy_method(20)
+rescue ArgumentError => e #assign the exception object to variable "e"
+  puts "That was not an acceptable number!"
+  puts "Here's the backtrace for this exception:"
+  puts e.backtrace
+  puts "And here's the exception object's message:"
+  puts e.message
+end
+
+# The splat * operator
+a = ["a","b"]
+def join(x,y)
+  puts x + " " + y
+end
+join(*a) #a b
+join(a) #ArgumentError
