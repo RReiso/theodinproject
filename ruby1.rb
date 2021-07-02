@@ -138,3 +138,13 @@ def m(a:, b:)
 end
 m(a:1,b:2)
 #m(3,5) # required keywords: a, b (ArgumentError)
+
+#Range inclusion
+r = "a".."z"
+puts r.cover?("abc")#true
+puts r.cover?("yzzzzzzz")#true
+puts r.cover?("zab")#false
+puts r.cover?("aBc")#true
+n = 1.0..2.0
+puts n.include?(1.567886)#true
+puts n.include?(3.567886)#false
