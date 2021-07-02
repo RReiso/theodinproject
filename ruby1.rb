@@ -124,4 +124,10 @@ def join(x,y)
   puts x + " " + y
 end
 join(*a) #a b
-join(a) #ArgumentError
+#join(a) #ArgumentError
+
+#Symbol example
+sym = :david
+puts sym.upcase #DAVID
+puts sym.succ #davie
+puts sym[2]# "v"
