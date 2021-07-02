@@ -131,3 +131,10 @@ sym = :david
 puts sym.upcase #DAVID
 puts sym.succ #davie
 puts sym[2]# "v"
+
+#Keyword arguments
+def m(a:, b:)
+  puts a,b
+end
+m(a:1,b:2)
+#m(3,5) # required keywords: a, b (ArgumentError)
