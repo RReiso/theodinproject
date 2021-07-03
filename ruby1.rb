@@ -148,3 +148,20 @@ puts r.cover?("aBc")#true
 n = 1.0..2.0
 puts n.include?(1.567886)#true
 puts n.include?(3.567886)#false
+
+#Sets
+require "set"
+a = Set.new(["B", "C"])
+puts a.object_id
+a.add("E")
+puts a
+puts a.object_id
+a.add({ "A" => "a", "B" => "b" })
+puts a
+a.merge({ "C" => "c", "D" => "d" })
+puts a
+puts a.object_id
+b = Set.new({ "C" => "c", "D" => "d" })
+puts b
+
+
