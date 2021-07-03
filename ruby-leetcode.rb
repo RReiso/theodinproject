@@ -7,3 +7,15 @@ def single_number(num)
   end
 end
 puts single_number([4,1,2,1,2])
+
+def single_number2(num)
+  num.each do |n|
+    return n if num.count(n) == 1
+  end
+end
+puts single_number2([1,1,2,91,2])
+
+def single_number3(num)
+  num.sort_by {|el| num.count(el)}[0]
+end
+puts single_number3([1,1,7,2,1,2])
