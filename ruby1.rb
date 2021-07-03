@@ -164,4 +164,8 @@ puts a.object_id
 b = Set.new({ "C" => "c", "D" => "d" })
 puts b
 
+#generate numbers with step 3 from 10 to 25
+k=[]
+10.step(25,3).each {|el| k<<el}
+puts k
 
