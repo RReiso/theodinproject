@@ -169,3 +169,10 @@ k=[]
 10.step(25,3).each {|el| k<<el}
 puts k
 
+# Regex example
+string = "My phone number is (123) 555-1234."
+phone_re = %r{\((\d{3})\)\s+(\d{3})-(\d{4})}
+m = phone_re.match(string)
+3.times do |index|
+ puts "Capture ##{index + 1}: #{m.captures[index]}"
+end
