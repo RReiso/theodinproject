@@ -180,8 +180,16 @@ end
 #Find word length with reduce method
 def find_word_lengths(word_list)
   word_list.reduce(Hash.new(0)) do |hash, el|
-    hash[el] = hash[el] + el.size
+    hash[el] += el.size
     hash
   end
 end
 p(find_word_lengths(%w(hi there how is everyone)))
+
+#Find word length with each method
+def word_length(list)
+  hash={}
+  list.each {|w| hash[w] = w.size}
+  hash
+end
+p(word_length(%w(hi there how is everyone)))
