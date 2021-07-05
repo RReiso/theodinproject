@@ -176,3 +176,12 @@ m = phone_re.match(string)
 3.times do |index|
  puts "Capture ##{index + 1}: #{m.captures[index]}"
 end
+
+#Find word length with reduce method
+def find_word_lengths(word_list)
+  word_list.reduce(Hash.new(0)) do |hash, el|
+    hash[el] = hash[el] + el.size
+    hash
+  end
+end
+p(find_word_lengths(%w(hi there how is everyone)))
