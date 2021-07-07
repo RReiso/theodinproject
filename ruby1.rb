@@ -193,3 +193,17 @@ def word_length(list)
   hash
 end
 p(word_length(%w(hi there how is everyone)))
+
+#Lambda and proc example
+def lambda_vs_proc
+ my_lam = lambda {return puts "Hi, I'm your lambda!"  }
+ my_lam.call
+ puts "Returned from lambda!"
+ my_proc = Proc.new { return puts "Hello from proc!" }
+ my_proc.call
+ puts "The proc will not allow this to be seen!"
+end
+ lambda_vs_proc
+# Hi, I'm your lambda!
+# Returned from lambda!
+# Hello from proc!
