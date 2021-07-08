@@ -30,3 +30,14 @@ end
 
 move_zeroes2([0,1,0,3,12])
 move_zeroes2([0,0,1])
+
+
+def move_zeroes3(nums) #runtime 52ms but more memory
+  num_of_zerros = nums.tally.fetch(0,0) # returns value for the key (first argument), if not found, returns second arg
+  nums.delete(0)
+  num_of_zerros.times {nums.push(0)}
+  p nums
+end
+
+move_zeroes3([0,1,0,3,12])
+move_zeroes3([1])
