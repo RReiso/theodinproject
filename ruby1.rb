@@ -207,3 +207,39 @@ end
 # Hi, I'm your lambda!
 # Returned from lambda!
 # Hello from proc!
+
+module Masr
+ def self.extended(obj)
+    def obj.acce
+      puts "hello"
+    end
+ end
+ def an_inst_method
+ puts "This module supplies this instance method."
+ end
+end
+my_object = Class.new
+my_object.extend(Masr)
+my_object.an_inst_method
+my_object.acce
+
+#class instance variable
+class Cow
+@count = 10
+def self.count
+@count
+end
+end
+class BigCow < Cow
+end
+p Cow.count # 10
+p BigCow.count #nil
+
+class BigCow
+  @count=200
+end
+p BigCow.count #200
+
+value = [1, 2, 3]
+p value_at_index_four: value[4], all_values: value
+#{:value_at_index_four=>nil, :all_values=>[1, 2, 3]}
