@@ -1,3 +1,7 @@
+#Given a signed 32-bit integer x, return x with its digits reversed.
+# If reversing x causes the value to go outside the signed 32-bit 
+#integer range [-231, 231 - 1], then return 0.
+
 def reverse(x) 
   int_str = x.to_s
   res_str=String.new
@@ -19,7 +23,7 @@ def reverse(x)
 end
 reverse(1563847412)
 
-def reverse2(x) - fastest
+def reverse2(x) #- fastest
   res = []
   i = 1
   if x < 0
@@ -60,3 +64,7 @@ def reverse3(x)
   end
 end
 reverse3(1563847412)
+p 12/10 #1
+p -12/10 #-2
+p -12/(-10) #1
+p 12/(-10) #-2
