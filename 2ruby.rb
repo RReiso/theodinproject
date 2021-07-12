@@ -45,7 +45,7 @@ def greet3(&my_block)
   yield self, ran_nr if block_given?
 end
 
-greet3 { |obj, nr| puts "Hello #{obj} and #{nr} with yield self!" }
+greet3 { |obj, nr| puts "Hello #{obj} and #{nr} with 'if block_given'" }
 
 greet3
 
@@ -121,3 +121,30 @@ p Icecream.all # {1=>"blueberry", 2=>"vanilla"}
 
 p icecream1.kind_of?(Dessert) #true
 p icecream2.instance_of?(Dessert) #false
+
+#Class expressions
+res = class Result
+        "string a"
+        123
+end
+p res #123
+
+#validates method
+class Book
+  attr_accessor :title, :author, :year
+  
+  def self.validations
+    @validations
+  end
+  
+  def self.validates(attribute, rules)
+    @validations ||=Hash.new
+    @validations[attribute] = rules
+  end
+
+  validates :title, blank: false 
+  validates :year, type: :int, blank: false
+  
+end
+
+p Book.validations # {:title=>{:blank=>false}, :year=>{:type=>:int, :blank=>false}}
