@@ -1,9 +1,9 @@
 #Hashes
 hash1 = { fruit: 'apple', veggetable: 'tomato', number: 7 }
-hash2 = { fruit: 'apple', vegetable: 'tomato', number: 7 }
 
 #Arrays
 arr = hash1.sort_by { |key, value| key } #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
+arr = hash1.sort_by { |key| key } #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
 arr1 = hash1.sort_by(&:itself) #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
 p arr1
 
@@ -39,7 +39,7 @@ end
 
 greet2 { |nr| puts "Hello #{nr} with call method!" }
 
-def greet3(&my_block)
+def greet3
   puts 'Check'
   ran_nr = rand(100)
   yield self, ran_nr if block_given?
@@ -54,7 +54,7 @@ class Dessert
 end
 
 class Icecream < Dessert
-  @all_icecreams = Hash.new
+  @all_icecreams = {}
   @counter = 0
 
   def self.counter=(num)
@@ -148,3 +148,20 @@ class Book
 end
 
 p Book.validations # {:title=>{:blank=>false}, :year=>{:type=>:int, :blank=>false}}
+
+names_with_ages =
+[
+["lucy", 3],
+["rita", 9],
+["markus", 11]
+]
+
+names_with_ages.each do |name, age|
+puts name.ljust(7,"*") + age.to_s
+end
+# lucy***3
+# rita***9
+# markus*11
+
+p "1 esmu26 5".gsub(/\d+/) { |num| num.next } #"2 esmu27 6"
+p "1 esmu26 5".gsub(/\d+/) (&:next) #"2 esmu27 6"
