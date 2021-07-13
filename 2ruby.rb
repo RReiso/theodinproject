@@ -1,7 +1,20 @@
-#Hashes
+# Hashes and arrays
+food = Hash.new([])
+food[:vegetables] << "tomatoes" 
+food[:fruits] << "apples" 
+p food # {}
+p food[:vegetables] # ["tomatoes", "apples"]
+p food[:fruits] # ["tomatoes", "apples"]
+
+food = Hash.new { |hash, key| hash[key] = [] }
+food[:vegetables] << "tomatoes" 
+food[:fruits] << "apples" 
+p food # {:vegetables=>["tomatoes"], :fruits=>["apples"]}
+p food[:vegetables] # ["tomatoes"]
+p food[:fruits] # ["apples"]
+
 hash1 = { fruit: 'apple', veggetable: 'tomato', number: 7 }
 
-#Arrays
 arr = hash1.sort_by { |key, value| key } #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
 arr = hash1.sort_by { |key| key } #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
 arr1 = hash1.sort_by(&:itself) #[[:fruit, "apple"], [:number, 7], [:veggetable, "tomato"]]
@@ -164,4 +177,5 @@ end
 # markus*11
 
 p "1 esmu26 5".gsub(/\d+/) { |num| num.next } #"2 esmu27 6"
-p "1 esmu26 5".gsub(/\d+/) (&:next) #"2 esmu27 6"
+p "1 esmu26 5".gsub(/\d+/,&:next) #"2 esmu27 6"
+
