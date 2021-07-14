@@ -70,6 +70,7 @@ class TicTacToe
     end
   end
 
+  private
   def print_board
     divider = '--+---+--'
     puts "\n#{@board[0]} | #{@board[1]} | #{@board[2]}"
