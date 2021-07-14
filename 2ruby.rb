@@ -203,4 +203,57 @@ p my_style.name # Impressionism
 
 # Proc and lambda
 proc1 = Proc.new {|x| x+100}
-p [1,2,3].map(&:proc1)
+p [1,2,3].map(&proc1)
+
+def some_method(&proc)
+  [8,9,10].map{|el| yield el} 
+end
+
+p some_method(&proc1) # [108, 109, 110]
+
+def some_method1(proc)
+  [8,9,10].map{|el| proc.call(el)} 
+end
+
+p some_method1(proc1) # [108, 109, 110]
+
+def some_method2(&proc)
+  [8,9,10].map{|el| proc.call(el)} 
+end
+
+p some_method2(&proc1) # [108, 109, 110]
+
+lambda1 = lambda {|x| x*100}
+
+def some_method3(&my_lam)
+  my_lam.call(5)
+end
+p some_method3(&lambda1)
+
+def some_method4(my_lam)
+  my_lam.call(5)
+end
+p some_method4(lambda1)
+
+p [10,11,12].map(&lambda1)
+
+#module with self.included method
+module Delicious
+  def self.included(my_class)
+    attr_accessor :food
+  end
+
+  def eat
+    @food ||=0
+    @food+=1
+    puts "I have eatend #{food} items of food."
+  end
+end
+ 
+class Food
+  include Delicious
+end
+
+cake = Food.new
+cake.eat
+p cake.food
