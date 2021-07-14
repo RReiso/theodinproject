@@ -1,4 +1,5 @@
 # Hashes and arrays
+
 food = Hash.new([])
 food[:vegetables] << "tomatoes" 
 food[:fruits] << "apples" 
@@ -12,6 +13,8 @@ food[:fruits] << "apples"
 p food # {:vegetables=>["tomatoes"], :fruits=>["apples"]}
 p food[:vegetables] # ["tomatoes"]
 p food[:fruits] # ["apples"]
+
+
 
 hash1 = { fruit: 'apple', veggetable: 'tomato', number: 7 }
 
@@ -179,3 +182,25 @@ end
 p "1 esmu26 5".gsub(/\d+/) { |num| num.next } #"2 esmu27 6"
 p "1 esmu26 5".gsub(/\d+/,&:next) #"2 esmu27 6"
 
+
+class ArtStyle
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  private
+  attr_writer :name
+end
+
+my_style = ArtStyle.new("Cubism")
+p my_style.name # Cubism
+# my_style.name = "Impressionism" #NoMethodError
+
+my_style.__send__(:name=, "Impressionism") 
+p my_style.name # Impressionism
+
+# Proc and lambda
+proc1 = Proc.new {|x| x+100}
+p [1,2,3].map(&:proc1)
