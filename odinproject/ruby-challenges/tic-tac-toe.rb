@@ -40,15 +40,16 @@ class TicTacToe
       chosen_position = @current_player.choose_position
       update_available_positions(chosen_position)
       @board[chosen_position - 1] = @current_player.marker
-      # draw_board
       if winner?(@current_player)
         draw_board
         sleep(0.5)
         puts "The winner is #{@current_player.name}!"
-        return
-      # elsif draw?(@current_player)
-      #   puts "It's a draw!"
-      #   return
+        play_again?
+      elsif draw?
+        draw_board
+        sleep(0.5)
+        puts "It's a draw!"
+        play_again?
       end
       switch_player
     end
@@ -73,8 +74,25 @@ class TicTacToe
       end
   end
 
+  def draw?
+    @available_positions.empty?
+  end
+
   def switch_player
     @current_player = @current_player == @players[0]? @players[1] : @players[0]
+  end
+
+  def play_again?
+    loop do
+      print "\nPlay again? y/n:"
+      answer = gets.chomp.downcase
+      if answer == "n"
+        exit
+      elsif answer == "y"
+        initialize
+        play
+      end
+    end
   end
 
 end
