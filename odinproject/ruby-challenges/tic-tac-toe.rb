@@ -47,20 +47,20 @@ class TicTacToe
     puts "\nWelcome to Tic Tac Toe game!\n"
     sleep(2)
     loop do
-      puts "\nGame board:\n\n"
-      draw_board
+      puts "\nGame board:"
+      print_board
       sleep(0.5)
       chosen_position = @current_player.choose_position
       update_available_positions(chosen_position)
       @board[chosen_position - 1] = @current_player.marker
 
       if winner?(@current_player)
-        draw_board
+        print_board
         sleep(0.5)
         puts "The winner is #{@current_player.name}!"
         play_again?
       elsif draw?
-        draw_board
+        print_board
         sleep(0.5)
         puts "It's a draw!"
         play_again?
@@ -70,9 +70,9 @@ class TicTacToe
     end
   end
 
-  def draw_board
+  def print_board
     divider = '--+---+--'
-    puts "#{@board[0]} | #{@board[1]} | #{@board[2]}"
+    puts "\n#{@board[0]} | #{@board[1]} | #{@board[2]}"
     puts divider
     puts "#{@board[3]} | #{@board[4]} | #{@board[5]}"
     puts divider
