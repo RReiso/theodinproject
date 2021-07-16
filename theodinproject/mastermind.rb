@@ -42,7 +42,7 @@ class Mastermind
         puts "Guesses left: #{@guesses}"
         @guesses-=1
         combination = player.choose_combination
-        
+
         if winner?(combination)
           puts "Congratulations! You won!"
           play_again?
@@ -68,13 +68,23 @@ class Mastermind
       end
 
       def play_again?
+        loop do
+      print "\nPlay again? y/n:"
+      answer = gets.chomp.downcase
+      if answer == 'n'
         exit
+      elsif answer == 'y'
+        initialize
+        play
+      end
+    end
       end
 
 end
 
 new_game = Mastermind.new
 new_game.play
+
 
 
 
