@@ -22,6 +22,10 @@ end
 class Mastermind
   COLORS = %w[YELLOW BLUE RED GREEN PURPLE WHITE]
 
+
+
+
+
   def initialize
     #How to pass COLORS? Or access in Human class -  Mastermind::COLORS
     @players = [Human.new(COLORS)]
@@ -56,8 +60,8 @@ class Mastermind
           puts "No more guesses. You lost!"
           play_again?
         else
-          hints = find_matches(combination)
-          p hints
+          hints = create_hints(combination)
+          print_hints(hints)
         end
       end
     end
@@ -77,16 +81,35 @@ class Mastermind
         combination == @secret_combination
       end
 
-      def find_matches(combination)
+      def create_hints(combination)
         hints = []
+        secret_combo = @secret_combination.dup
+      
+        # Find exact (color and position) matches:
         @secret_combination.each_with_index do |color, i|
+        
           if color == combination[i]
-            hints <<"X"
-          elsif @secret_combination.include?(combination[i])
-            hints << "O"
+            hints << red("\u26AB".encode('utf-8'))
+            
+            secret_combo.delete_at(secret_combo.index(color)) # DELETE FIRST OCCURance of color
           end
-        end
-        hints
+        
+          end
+
+          #Find color matches
+      combination.each do |color|
+            if secret_combo.include?(color)
+              hints << "\u26AB".encode('utf-8')
+              secret_combo.delete_at(secret_combo.index(color))
+            end
+          end
+            p secret_combo
+        hints.sort
+      end
+
+      def print_hints(hints)
+        hints.each {|hint| print hint}
+          puts "\n"
       end
 
       def play_again?
@@ -101,6 +124,15 @@ class Mastermind
       end
     end
       end
+
+
+      def colorize(text, color_code)
+  "#{color_code}#{text}\e[0m"
+end
+
+def red(text)
+  colorize(text, "\e[31m")
+end
 
 end
 
