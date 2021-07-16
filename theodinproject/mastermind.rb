@@ -6,7 +6,7 @@ class Human
   def choose_combination
     loop do
       puts "Choose your color combination (seperate colors with a space):"
-      combo = gets.chomp.upcase
+      combo = gets.chomp.upcase.split(" ")
       return combo if @mastermind.valid_input?(combo)
       puts "Invalid input"
     end
@@ -19,7 +19,7 @@ class Mastermind
 
   def initialize
     @players = [Human.new(self)]
-    @guesses = 12
+    @guesses = 3
     # Is this necessary?
     # @role = 0
     # @secret_combination = []
@@ -37,24 +37,40 @@ class Mastermind
       player = @players[0]
       @secret_combination = COLORS.shuffle.first(4)
       p @secret_combination
-      combination = player.choose_combination
-      if combination == @secret_combination
-        puts "Congratulations! You won!"
-      elsif @guesses == 0
-        puts "I am sorry. You lost!"
-      else
-        # hints = find_matches
-        # p hints
+
+      loop do
+        puts "Guesses left: #{@guesses}"
+        @guesses-=1
+        combination = player.choose_combination
+        
+        if winner?(combination)
+          puts "Congratulations! You won!"
+          play_again?
+        elsif @guesses == 0
+          puts "No more guesses. You lost!"
+          play_again?
+        else
+          # hints = find_matches
+          # p hints
+        end
       end
     end
   end
 
 
       def valid_input?(combination)
-        combination = combination.split(" ")
         p "chosen combo " + combination.to_s
         combination.size == 4 && combination.all? { |color| COLORS.include?(color) }
       end
+
+      def winner?(combination)
+        combination == @secret_combination
+      end
+
+      def play_again?
+        exit
+      end
+
 end
 
 new_game = Mastermind.new
