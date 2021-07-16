@@ -14,6 +14,7 @@ class Human
   end
 
   def valid_input?(combination)
+    # all_colors = Mastermind::COLORS
     combination.size == 4 && combination.all? { |color| @all_colors.include?(color) }
   end
 end
@@ -22,24 +23,25 @@ class Mastermind
   COLORS = %w[YELLOW BLUE RED GREEN PURPLE WHITE]
 
   def initialize
+    #How to pass COLORS? Or access in Human class -  Mastermind::COLORS
     @players = [Human.new(COLORS)]
     @guesses = 3
+    @secret_combination = []
     # Is this necessary?
     # @role = 0
-    # @secret_combination = []
   end
 
   def play
-    puts "rules"
-    puts "Choose your role: Press 1 for CODE BREAKER, press 2 for CODE CREATOR"
+    puts "rules will be here"
     loop do
+      puts "Choose your role: Press 1 for CODE BREAKER, press 2 for CODE CREATOR"
       @role = gets.chomp
       break if @role == "1" || @role == "2"
-      puts "Invalid input"
+      puts "Invalid input!"
     end
     if @role == "1"
       player = @players[0]
-      @secret_combination = COLORS.shuffle.first(4)
+      create_secret_combination
       p @secret_combination
 
       loop do
@@ -54,8 +56,8 @@ class Mastermind
           puts "No more guesses. You lost!"
           play_again?
         else
-          # hints = find_matches
-          # p hints
+          hints = find_matches(combination)
+          p hints
         end
       end
     end
@@ -67,8 +69,24 @@ class Mastermind
       #   combination.size == 4 && combination.all? { |color| COLORS.include?(color) }
       # end
 
+      def create_secret_combination
+        4.times {@secret_combination << COLORS.sample}
+      end
+
       def winner?(combination)
         combination == @secret_combination
+      end
+
+      def find_matches(combination)
+        hints = []
+        @secret_combination.each_with_index do |color, i|
+          if color == combination[i]
+            hints <<"X"
+          elsif @secret_combination.include?(combination[i])
+            hints << "O"
+          end
+        end
+        hints
       end
 
       def play_again?
