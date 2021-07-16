@@ -1,16 +1,20 @@
 class Human
-  def initialize(mastermind)
-    @mastermind = mastermind
+  def initialize(all_colors)
+    @all_colors = all_colors
   end
 
   def choose_combination
     loop do
       puts "Choose your color combination (seperate colors with a space):"
       combo = gets.chomp.upcase.split(" ")
-      return combo if @mastermind.valid_input?(combo)
+      return combo if valid_input?(combo)
       puts "Invalid input"
     end
       
+  end
+
+  def valid_input?(combination)
+    combination.size == 4 && combination.all? { |color| @all_colors.include?(color) }
   end
 end
 
@@ -18,7 +22,7 @@ class Mastermind
   COLORS = %w[YELLOW BLUE RED GREEN PURPLE WHITE]
 
   def initialize
-    @players = [Human.new(self)]
+    @players = [Human.new(COLORS)]
     @guesses = 3
     # Is this necessary?
     # @role = 0
@@ -58,10 +62,10 @@ class Mastermind
   end
 
 
-      def valid_input?(combination)
-        p "chosen combo " + combination.to_s
-        combination.size == 4 && combination.all? { |color| COLORS.include?(color) }
-      end
+      # def valid_input?(combination)
+      #   p "chosen combo " + combination.to_s
+      #   combination.size == 4 && combination.all? { |color| COLORS.include?(color) }
+      # end
 
       def winner?(combination)
         combination == @secret_combination
