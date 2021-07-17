@@ -30,3 +30,6 @@ end
 
 # Input: l1 = [1,2,4], l2 = [1,3,4,5]
 # Output: [1,1,2,3,4,4,5]
+
+# Time complexity O(n + m)
+# Space complexity O(1)
