@@ -18,3 +18,14 @@ def is_palindrome(head)
      end
     array_of_values == array_of_values.reverse
 end
+
+def is_palindrome(head)
+    values = []
+    reversed = []
+     while head
+      values << head.val
+      reversed.unshift(head.val)
+      head = head.next
+     end
+    values == reversed
+end
