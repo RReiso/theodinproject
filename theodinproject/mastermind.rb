@@ -144,10 +144,10 @@ end
 
 
 #COMPUTER LOGIC
-  def check_for_clues(combination)
+    def check_for_clues(combination)
     clues = []
 
-    secret_combo = %w[BLUE YELLOW RED RED].dup
+    secret_combo = %w[BLUE YELLOW GREEN RED].dup
 
     # Find and mark exact matches
     secret_combo.each_with_index do |color, i|
@@ -171,11 +171,20 @@ end
   end
 
 
-  all_combinations = %w[YELLOW BLUE RED].repeated_permutation(4).to_a
+  all_combinations = %w[YELLOW BLUE RED GREEN PURPLE WHITE].repeated_permutation(4).to_a
+  count = 0
 loop do
+  count +=1
 # all_combinations = [%w[YELLOW BLUE RED]]
 # p all_combinations
-guess =gets.chomp.upcase.split(" ")
+if count ==1
+  guess = %w[GREEN GREEN WHITE WHITE]
+else
+guess =all_combinations.sample
+# guess = gets.chomp.split(" ")
+end
+# guess = %w[GREEN GREEN WHITE WHITE]
+p "comp guess #{guess}"
 clues = check_for_clues(guess.dup)
 p clues
 # if clues == []
@@ -183,9 +192,9 @@ p clues
 # end
 clues = clues.tally
 p clues
-red_pegs = clues.values[0]
+red_pegs = clues["red"] #nil of none
 p red_pegs
-white_pegs = clues.values[1]
+white_pegs = clues["white"]
 # 4.times do |i|
 #   all_combinations.each do |combinaton, index|
 #     if combination[i] == guess[i]
@@ -193,41 +202,86 @@ white_pegs = clues.values[1]
 #     end
 #   end
 # end
+if red_pegs == 4
+    p guess
+    p count
+exit
+  end
 
+remaining_combinations = []
+
+if red_pegs
 possible_matching_indexes = [0,1,2,3].combination(red_pegs).to_a
 p possible_matching_indexes
 
-remaining_combinations = []
-p all_combinations
+# p all_combinations
 all_combinations.each_with_index do |combination, i|
-    p combination
+    # p combination
     
-    possible_matching_indexes.each do |subarray|
-      p subarray
-      bool=[]
-      subarray.each do |index_nr|
+    possible_matching_indexes.each do |array_of_indexes|
+      # p subarray
+      match=[]
+      array_of_indexes.each do |index|
         # p combination, guess
         # p "comb #{combination[index_nr]}"
         # p "guess  #{guess[index_nr]}"
-        if combination[index_nr] == guess[index_nr]
-          bool <<"+"
+        if combination[index] == guess[index]
+          match <<"+"
         else
-          bool << "-"
+          match << "-"
         end
       end
       # p bool
 
-      if bool.all? { |el| el == "+" }
-        p subarray 
-        p "bool ", bool
-        remaining_combinations<<combination
-        p all_combinations[i]
-        all_combinations[i] = "X"
+      if match.all? { |el| el == "+" }
+        # p subarray 
+        # p "bool ", bool
+        remaining_combinations << combination
+        remaining_combinations.delete(guess)
+        # p all_combinations[i]
+        # all_combinations[i] = "X"
         break
       end
     end
   end
-  # p all_combinations
+
+elsif white_pegs
+  all_combinations.each do |combination|
+    guess.each do |color|
+      if combination.include?(color)
+        remaining_combinations << combination
+        break
+      end
+    end
+  end
+  # remaining_combinations = all_combinations
+
+
+  # no red pegs no white pegs. need to delete all combinations with the colors form the guess
+else
+  colors_not_in_secret_code = guess.tally.keys
+  p colors_not_in_secret_code
+  p all_combinations.size
+  counter = 0
+  all_combinations.each_with_index do |combination, i| 
+    colors_not_in_secret_code.each do |color|
+      if combination.include?(color)
+      # if combination.include?(color)
+        all_combinations[i] = nil 
+        counter +=1
+        break # break if found one match, no need to go through all
+      end
+    end
+  end
+  remaining_combinations = all_combinations.compact
+  p counter
+  p remaining_combinations.size
+  p remaining_combinations
+  # exit
+end
+
+  
   p remaining_combinations
   all_combinations = remaining_combinations
 end
+
