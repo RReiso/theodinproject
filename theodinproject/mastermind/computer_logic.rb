@@ -2,11 +2,14 @@ module ComputerLogic
   
   def find_remaining_combinations(computer_guess, clues)
     red_pegs, white_pegs = nr_of_pegs(clues)
-    if red_pegs
+    if red_pegs + white_pegs == 4
+      @all_combinations = computer_guess.permutation(4).to_a
+    end
+    if red_pegs > 0
       possible_matching_positions = [0, 1, 2, 3].combination(red_pegs).to_a
       remaining_combinations =
         check_red_pegs(possible_matching_positions, computer_guess)
-    elsif white_pegs
+    elsif white_pegs > 0
       possible_matching_colors =
         computer_guess.combination(white_pegs).to_a.uniq
       remaining_combinations =
@@ -20,9 +23,10 @@ module ComputerLogic
   end
 
   def nr_of_pegs(clues)
-    clues = clues.tally
-    red_pegs = clues["\e[31m\u25CF\e[0m"] #nil if none
-    white_pegs = clues["\u25CF"]
+    counts = Hash.new(0)
+    clues.each { |clue| counts[clue] += 1 }
+    red_pegs = counts["\e[31m\u25CF\e[0m"] 
+    white_pegs = counts["\u25CF"]
     return red_pegs, white_pegs
   end
 

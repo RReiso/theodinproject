@@ -163,3 +163,4 @@ end
 
 new_game = Mastermind.new
 new_game.play
+
