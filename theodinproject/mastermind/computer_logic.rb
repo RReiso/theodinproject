@@ -6,9 +6,9 @@ module ComputerLogic
       @all_combinations = computer_guess.permutation(4).to_a
     end
     if red_pegs > 0
-      possible_matching_positions = [0, 1, 2, 3].combination(red_pegs).to_a
+      possible_correct_positions = [0, 1, 2, 3].combination(red_pegs).to_a # Ex: if red_pegs=2, then possible correct positions could be 0,1 or 0,2 or 1,3 etc
       remaining_combinations =
-        check_red_pegs(possible_matching_positions, computer_guess)
+        check_red_pegs(possible_correct_positions, computer_guess)
     elsif white_pegs > 0
       possible_matching_colors =
         computer_guess.combination(white_pegs).to_a.uniq
@@ -30,10 +30,10 @@ module ComputerLogic
     return red_pegs, white_pegs
   end
 
-  def check_red_pegs(possible_matching_positions, computer_guess)
+  def check_red_pegs(possible_correct_positions, computer_guess)
     remaining_combinations = []
     @all_combinations.each do |combination|
-      possible_matching_positions.each do |positions|
+      possible_correct_positions.each do |positions|
         match = []
         positions.each do |position|
           if combination[position] == computer_guess[position]
@@ -78,7 +78,7 @@ module ComputerLogic
       colors_not_in_secret_code.each do |color|
         if combination.include?(color)
           @all_combinations[i] = nil
-          break # break if one match is found, no need to go through all
+          break # break if one match is found, no need to go through all colors
         end
       end
     end
