@@ -12,21 +12,14 @@ class Mastermind
   def initialize
     @human_player = HumanPlayer.new
     @secret_combination = []
-    # Is this necessary?
-    # @role = 0
-    # @all_combinations
+    @all_combinations = []
   end
 
   def play
     print_rules
-    loop do
-      puts 'Choose your role: Press 1 for CODE BREAKER, press 2 for CODE CREATOR'
-      @role = gets.chomp
-      break if @role == '1' || @role == '2'
-      puts " \nInvalid input!"
-    end
+  
 
-    if @role == '1'
+    if role == '1'
       set_secret_combination
       turns = 12
 
@@ -89,6 +82,16 @@ class Mastermind
 
   def print_rules
     puts "\nWelcome to Mastermind!\n\nRules:\nYou can choose to be a code MAKER or a code BREAKER.\nCode maker creates a four color secret combination.\nCode breaker tries to guess the secret combination.\n\nThe colors can repeat in the secret combination.\nYou or computer can make up to 12 guesses.\n\nAfter each guess, there will be up to four clues:\nRed peg #{red("\u25CF".encode('utf-8'))} means there is a correct color in the correct position.\nWhite peg #{"\u25CF".encode('utf-8')} means there is a correct color in the wrong position.\n\nColors to choose from: #{red('RED')}, #{blue('BLUE')}, #{green('GREEN')}, WHITE, #{yellow('YELLOW')} and #{purple('PURPLE')}.\n\nGood luck!\n\n"
+  end
+
+def role
+  loop do
+      puts 'Choose your role: Press 1 for CODE BREAKER, press 2 for CODE CREATOR'
+      role = gets.chomp
+      return role if role == '1' || role == '2'
+      puts " \nInvalid input!"
+    end
+    
   end
 
   def set_secret_combination
