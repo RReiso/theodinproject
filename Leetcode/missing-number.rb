@@ -18,3 +18,15 @@ def missing_number2(nums)
   # (0..nums.size).sum - nums.sum # very slow
 end
 missing_number2([9,6,4,2,3,5,7,0,1])
+
+def missing_number3(nums)
+  expected = 0
+  actual = 0
+  nums.each_with_index do |num, index|
+    actual += num
+    expected += (index + 1)
+    # index = index +1
+    #expected+= index
+  end
+  expected - actual
+end
