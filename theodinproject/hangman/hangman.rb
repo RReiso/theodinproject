@@ -13,20 +13,21 @@ class Hangman
       load_saved_game if  user_input == "2"
       loop do
         puts "\nGuesses left: #{@guesses}"
-        puts "Letters you have guessed: #{@used_letters.join(" ")}"
+        puts "Letters you have guessed: #{@used_letters.join(" ")}\n\n"
         display_letter_line
         take_user_guess
         if winner?
-          puts "winner"
+          puts "Congratulations! You have guessed the secret word '#{@secret_word}'!"
           play_again?
         end
         @guesses-=1
         break if @guesses==0
       end 
+      puts "\nYou lost! The secret word was '#{@secret_word}'!"
     end
 
     def print_rules
-      puts "rules"
+      puts "Welcome to the Hangman game!\nTry to guess the secret word.\nType one letter at each turn.\nYou can make 10 wrong guesses!\nGood luck!\n"
     end
 
     def user_input
@@ -44,22 +45,27 @@ class Hangman
     end
 
     def display_letter_line
-      puts @secret_word
+      # puts @secret_word
       
   
-      puts @letter_line
+      puts @letter_line.to_s + "\n\n"
     end
 
     def take_user_guess
       loop do
         print "Enter a letter: "
       guess = gets.chomp.downcase
-       if ("a".."z").include?(guess)
+        if @used_letters.include?(guess)
+          puts "The letter has already been chosen!\n\n"
+        
+      elsif ("a".."z").include?(guess) 
+      
         @used_letters << guess
         return 
-       end
+      else
       puts " \nInvalid input!"
       end
+    end
     end
 
     def winner?
