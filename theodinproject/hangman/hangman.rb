@@ -1,88 +1,116 @@
-require "./dictionary"
+require './dictionary'
+require './colorize'
+require 'yaml'
+
 class Hangman
   def initialize
-    @dictionary = Dictionary.new("./5desk.txt")
+    @dictionary = Dictionary.new('./5desk.txt')
     @secret_word = @dictionary.secret_word
-    @letter_line = "- " * @secret_word.length
+    @letter_line = '- ' * @secret_word.length
     @guesses = 10
     @used_letters = []
   end
 
   def play
     print_rules
-      load_saved_game if  user_input == "2"
-      loop do
-        puts "\nGuesses left: #{@guesses}"
-        puts "Letters you have guessed: #{@used_letters.join(" ")}\n\n"
+    load_saved_game if user_input == '2'
+    loop do
+      puts "\nGuesses left: #{@guesses}".green
+      puts "Letters you have guessed: #{@used_letters.join(' ')}"
+      display_letter_line
+      prompt_user
+      if winner?
         display_letter_line
-        take_user_guess
-        if winner?
-          puts "Congratulations! You have guessed the secret word '#{@secret_word}'!"
-          play_again?
-        end
-        @guesses-=1
-        break if @guesses==0
-      end 
-      puts "\nYou lost! The secret word was '#{@secret_word}'!"
+        puts "\nCongratulations! You have guessed the secret word '#{@secret_word}'!"
+               .yellow
+        play_again?
+      end
+      break if @guesses == 0
     end
+    puts "\nYou lost! The secret word was '#{@secret_word}'!".red
+    play_again?
+  end
 
-    def print_rules
-      puts "Welcome to the Hangman game!\nTry to guess the secret word.\nType one letter at each turn.\nYou can make 10 wrong guesses!\nGood luck!\n"
-    end
+  private
 
-    def user_input
-      loop do
-        puts 'Enter "1" to start a new game'
-      puts 'Enter "2" to load a saved game'
+  def print_rules
+    puts "\nWelcome to the Hangman game!\nYou need to guess the secret word to win the game.\nType one letter at each turn.\nYou can make 10 wrong guesses.\nType 'save' when you want to save your game.\nGood luck!\n\n"
+  end
+
+  def user_input
+    loop do
+      puts 'Enter "1" to start a new game'.light_blue
+      puts 'Enter "2" to load a saved game'.light_blue
       input = gets.chomp
-      return input if input == "1" || input == "2"
+      return input if input == '1' || input == '2'
       puts " \nInvalid input!"
+    end
+  end
+
+  def load_saved_game
+    puts 'loading'
+  end
+
+  def save_game
+    file_name = prompt_user_for_file_name
+    Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
+    File.open("./saved_games/#{file_name}.yml", 'w') { |f| YAML.dump(self) }
+    exit
+  end
+
+  def prompt_user_for_file_name
+    saved_games = Dir.glob('saved_games/*')
+    file_name = ''
+    loop do
+      puts 'Enter a name to save your game: '
+      file_name = gets.chomp.strip
+      if saved_games.include?("saved_games/#{file_name}.yml")
+        puts "\nFile aready exists"
+      end
+      if !saved_games.include?("saved_games/#{file_name}.yml") &&
+           !/\s+|^$/.match?(file_name)
+        break
       end
     end
+    file_name
+  end
 
-    def load_saved_game
-      puts "loading"
-    end
+  def display_letter_line
+    puts "\n#{@letter_line.to_s}".pink
+  end
 
-    def display_letter_line
-      # puts @secret_word
-      
-  
-      puts @letter_line.to_s + "\n\n"
-    end
-
-    def take_user_guess
-      loop do
-        print "Enter a letter: "
-      guess = gets.chomp.downcase
-        if @used_letters.include?(guess)
-          puts "The letter has already been chosen!\n\n"
-        
-      elsif ("a".."z").include?(guess) 
-      
-        @used_letters << guess
-        return 
+  def prompt_user
+    prompt = ''
+    loop do
+      print "\nEnter a letter (or 'save' to save the game): "
+      prompt = gets.chomp.downcase.strip
+      save_game if prompt == 'save'
+      if @used_letters.include?(prompt)
+        puts "This letter has already been chosen!\n\n"
+      elsif ('a'..'z').include?(prompt)
+        @used_letters << prompt
+        break
       else
-      puts " \nInvalid input!"
+        puts " \nInvalid input!"
       end
     end
-    end
+    @guesses -= 1 unless @secret_word.downcase.include?(prompt)
+  end
 
-    def winner?
-      update_letter_line
-      !@letter_line.include?("-")
-    end
+  def winner?
+    update_letter_line
+    !@letter_line.include?('-')
+  end
 
-    def update_letter_line
-          @secret_word.each_char.with_index do |letter, i|
-        if @used_letters.include?(letter.downcase)
-          @letter_line[i*2]=@secret_word[i]
-     
-        end
+  def update_letter_line
+    @secret_word.each_char.with_index do |letter, i|
+      if @used_letters.include?(letter.downcase)
+        @letter_line[i * 2] = @secret_word[i]
       end
     end
+  end
 
-def play_again?
+  def play_again?
     loop do
       print "\nPlay again? y/n: "
       answer = gets.chomp.downcase
@@ -94,7 +122,6 @@ def play_again?
       end
     end
   end
-
 end
 
 new_game = Hangman.new
