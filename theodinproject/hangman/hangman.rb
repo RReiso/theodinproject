@@ -5,7 +5,7 @@ class Hangman
     @secret_word = @dictionary.secret_word
     @letter_line = "- " * @secret_word.length
     @guesses = 10
-    @used_letters = ["a","e", "u"]
+    @used_letters = []
   end
 
   def play
@@ -18,6 +18,7 @@ class Hangman
         take_user_guess
         if winner?
           puts "winner"
+          play_again?
         end
         @guesses-=1
         break if @guesses==0
@@ -45,12 +46,7 @@ class Hangman
     def display_letter_line
       puts @secret_word
       
-      @secret_word.each_char.with_index do |letter, i|
-        if @used_letters.include?(letter)
-          @letter_line[i*2]=letter
-     
-        end
-      end
+  
       puts @letter_line
     end
 
@@ -67,9 +63,31 @@ class Hangman
     end
 
     def winner?
+      update_letter_line
       !@letter_line.include?("-")
     end
 
+    def update_letter_line
+          @secret_word.each_char.with_index do |letter, i|
+        if @used_letters.include?(letter.downcase)
+          @letter_line[i*2]=@secret_word[i]
+     
+        end
+      end
+    end
+
+def play_again?
+    loop do
+      print "\nPlay again? y/n: "
+      answer = gets.chomp.downcase
+      if answer == 'n'
+        exit
+      elsif answer == 'y'
+        initialize
+        play
+      end
+    end
+  end
 
 end
 
