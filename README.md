@@ -6,3 +6,9 @@ This is my first project with creating classes and establishing logic how the in
 At first I did not know how to start approaching the problem as I was used to solving smaller challenges by just writing and calling methods. This was my first experience in setting my mind for object oriented programming and I really enjoyed it.
 I spent a lot of time drawing out the logic of the game on paper before starting coding and once it was done the actuall coding part went faster than I had expected.
 I struggled with figuring out how to call an instance method of "B" class from an instance method of "A" class and learned that an instance of one class can be passed as an argument to a method of a different class.
+
+#### Mastermind
+Learnt how to organize code by separating modules. 
+
+#### Hangman
+Learnt how to write to and read from files. Learnt how to work with .yml files to save user's state of the game and implement save/load functionality.
