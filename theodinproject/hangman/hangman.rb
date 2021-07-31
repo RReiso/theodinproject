@@ -1,8 +1,11 @@
 require './dictionary'
 require './colorize'
+require './file-manager'
 require 'yaml'
 
 class Hangman
+  include FileManager
+
   def initialize
     @dictionary = Dictionary.new('./5desk.txt')
     @secret_word = @dictionary.secret_word
@@ -17,7 +20,7 @@ class Hangman
     play
   end
 
- protected
+  protected
 
   def play
     loop do
@@ -27,7 +30,8 @@ class Hangman
       prompt_user
       if winner?
         display_letter_line
-        puts "\nCongratulations! You have guessed the secret word '#{@secret_word}'!".yellow
+        puts "\nCongratulations! You have guessed the secret word '#{@secret_word}'!"
+               .yellow
         play_again?
       end
       break if @guesses == 0
@@ -36,7 +40,7 @@ class Hangman
     play_again?
   end
 
- private
+  private
 
   def print_rules
     puts "\nWelcome to the Hangman game!\nYou need to guess the secret word to win the game.\nType one letter at each turn.\nYou can make 10 wrong guesses.\nType 'save' when you want to save your game.\nGood luck!\n\n"
@@ -52,53 +56,6 @@ class Hangman
     end
   end
 
-  def load_game
-    if !Dir.exist?('./saved_games/')
-          loop do
-            puts "\nNo saved games!"
-            break if user_input == "1"
-          end
-    else
-      loaded_game.play
-  
-  end
-
-  end
-
-  def loaded_game
-    saved_games =  Dir.glob('saved_games/*')
-    p saved_games
-    loop do
-      puts "Choose a game"
-    file_name= gets.chomp
-    break if saved_games.include?(file_name)
-    end
-  File.open("./saved_games/nini2.yml", 'r') {|file| YAML::load(file)}
-  end
-
-
-  def save_game
-    file_name = prompt_user_for_file_name
-    Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
-    File.open("./saved_games/#{file_name}.yml", 'w') { |f| f.write(YAML.dump(self)) }
-    exit
-  end
-
-  def prompt_user_for_file_name
-    saved_games = Dir.glob('saved_games/*')
-    file_name = ''
-    loop do
-      puts 'Enter a name to save your game: '
-      file_name = gets.chomp.strip
-      if saved_games.include?("saved_games/#{file_name}.yml")
-        puts "\nFile aready exists"
-        next
-      end
-      break unless /\s+|^$/.match?(file_name)
-    end
-    file_name
-  end
-
   def display_letter_line
     puts "\n#{@letter_line.to_s}".pink
   end
@@ -110,7 +67,7 @@ class Hangman
       prompt = gets.chomp.downcase.strip
       save_game if prompt == 'save'
       if @used_letters.include?(prompt)
-        puts "This letter has already been chosen!\n\n"
+        puts "\nThis letter has already been chosen!".red
       elsif ('a'..'z').include?(prompt)
         @used_letters << prompt
         break
