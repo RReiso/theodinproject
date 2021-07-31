@@ -45,12 +45,12 @@ module FileManager
     saved_games = Dir.glob('saved_games/*')
     loop do
       puts 'Enter a name to save your game: '
-      save_file_name = gets.chomp.strip
-      if saved_games.include?("saved_games/#{save_file_name}.yml")
+      file_name = gets.chomp.strip
+      if saved_games.include?("saved_games/#{file_name}.yml")
         puts "\nFile aready exists"
         next
       end
-      return save_file_name unless /\s+|^$/.match?(save_file_name)
+      return file_name unless /\s+|^$/.match?(file_name)
     end
   end
 end
