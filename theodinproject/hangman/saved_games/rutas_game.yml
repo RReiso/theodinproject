@@ -52455,14 +52455,18 @@ dictionary: !ruby/object:Dictionary
   - zygote
   - zygotic
   - zymurgy
-secret_word: tenantable
-letter_line: 't e - a - t a - - e '
-guesses: 6
+secret_word: enjoyment
+letter_line: 'e n - - - m e n t '
+guesses: 3
 used_letters:
-- f
-- u
+- a
 - e
 - r
-- a
-- s
 - t
+- s
+- d
+- i
+- b
+- n
+- m
+- l

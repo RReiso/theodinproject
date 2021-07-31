@@ -38,7 +38,7 @@ module FileManager
     File.open("./saved_games/#{save_file_name}.yml", 'w') do |f|
       f.write(YAML.dump(self))
     end
-    puts "Saving game..."
+    puts "Your game has been saved!"
     exit
   end
 
