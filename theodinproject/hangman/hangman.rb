@@ -57,7 +57,7 @@ class Hangman
   end
 
   def display_letter_line
-    puts "\n#{@letter_line.to_s}".pink
+    puts "\n#{@letter_line.to_s}".yellow
   end
 
   def prompt_user
