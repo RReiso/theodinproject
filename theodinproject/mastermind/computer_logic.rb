@@ -59,7 +59,7 @@ module ComputerLogic
                               '-'
                             end
       end
-      if match?(position_matches)
+      if all_pluses?(position_matches)
         remaining_combinations << combination
         break
       end
@@ -85,14 +85,14 @@ module ComputerLogic
       colors.each do |color|
         color_matches << (combination.include?(color) ? '+' : '-')
       end
-      if match?(color_matches)
+      if all_pluses?(color_matches)
         remaining_combinations << combination
         break
       end
     end
   end
 
-  def match?(arr)
+  def all_pluses?(arr)
     arr.all? { |el| el == '+' }
   end
 
@@ -101,7 +101,7 @@ module ComputerLogic
       colors_not_in_secret_code.each do |color|
         if combination.include?(color)
           @all_combinations[i] = nil
-          break # break if one match is found, no need to go through all
+          break # break if one match is found, no need to go through all colors
         end
       end
     end
