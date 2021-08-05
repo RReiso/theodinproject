@@ -82,5 +82,5 @@ p multiply_els([2, 4, 5])
 my_proc = Proc.new { |el| el * 100 }
 p numbers.my_map(&my_proc)
 
-# my_map can take a proc and a block as arguments, if both given, executes proc
+# my_map can take a proc and a block as arguments, if both given, executes proc.
 p numbers.my_map(my_proc) { |el| el + 1 }
