@@ -8,11 +8,23 @@ class Tree
     @root = build_tree(arr)
   end
 
-def pretty_print(node = @root, prefix = '', is_left = true)
-  pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-  puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-  pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
-end
+  
+
+  def insert(value)
+    new_node = Node.new(value)
+    root = @root
+    while root
+      if new_node > root
+        return root.right = new_node unless root.right
+
+        root = root.right
+      elsif new_node <= root
+        return root.left = new_node unless root.left
+
+        root = root.left
+      end
+    end
+  end
 
   private
 
@@ -27,5 +39,12 @@ end
   end
 end
 
-tree = Tree.new([1,2,6, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.pretty_print
+tree = Tree.new([1, 2, 6, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# tree.pretty_print
+puts
+tree.insert(68)
+tree.insert(1)
+tree.insert(30)
+tree.insert(0.1)
+p tree.root
+# tree.pretty_print
