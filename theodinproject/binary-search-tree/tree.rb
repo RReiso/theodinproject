@@ -48,6 +48,20 @@ class Tree
     root
   end
 
+  def find(value, root = @root)
+    #  return root if root.nil?
+
+    if value > root.value
+      root.right = find(value, root.right)
+    elsif value < root.value
+      root.left = find(value, root.left)
+    else
+      return root
+    end
+  end
+
+
+
   private
 
   def remove_node(node)
@@ -90,7 +104,12 @@ tree.insert(6.11)
 tree.insert(4.8)
 tree.insert(6.1)
 # p tree.root
-# tree.pretty_print
+tree.pretty_print
 puts puts
 tree.delete(9999)
+p tree.find(5)
+puts
+p tree.find(7)
+puts
+p tree.find(6345)
 # tree.pretty_print
