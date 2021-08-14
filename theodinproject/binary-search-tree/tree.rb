@@ -9,10 +9,14 @@ class Tree
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
-  pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-  puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-  pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
-end
+    if node.right
+      pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false)
+    end
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+    if node.left
+      pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
+    end
+  end
 
   def insert(value)
     new_node = Node.new(value)
@@ -26,36 +30,35 @@ end
       elsif new_node < root
         root.left ? root = root.left : (return root.left = new_node)
       else
-        return puts "The node already exists in the tree"
+        return puts 'The node already exists in the tree'
       end
     end
   end
 
-  def delete(value)
-    root = @root
-    while root
-      if  value > root.value 
-        if root.right.value == value
-          root.right = remove_node(root.right)
-          return
+  def delete(value, root = @root)
+    current = root
+    while current
+      if value > current.value
+        if current.right.value == value
+          current.right = remove_node(current.right)
+          return root
         else
-          root = root.right
+          current = current.right
         end
-      elsif value < root.value
-        p root.value
-         if root.left.value == value
-          root.left = remove_node(root.left)
-          return
-         else
-          root = root.left
-         end
+      elsif value < current.value
+        if current.left.value == value
+          current.left = remove_node(current.left)
+          return root
+        else
+          current = current.left
+        end
       else
-        p "you want to delete root node"
+        # Remove root node
         root = remove_node(root)
-        p root
+        return root
       end
     end
-    pretty_print(@root)
+    puts 'The tree does not contain the given value'
   end
 
   private
@@ -71,29 +74,36 @@ end
   end
 
   def remove_node(node)
-    p node
-    if node.left.nil?
-      node.right
-    elsif node.right.nil?
-      node.left
-    else
-      node = node.right
-      while node.left
-        node = node.left
-      end
-      node
-    end
+    return node.right if node.left.nil?
+    return node.left if node.right.nil?
+
+    # Find the smallest node in the right subtree
+    current = node.right
+    current = current.left while current.left
+
+    # Copy value of the smallest node
+    node.value = current.value
+
+    # Delete node with the smallest value
+    node.right = delete(current.value, node.right)
+    node
   end
 end
 
-tree = Tree.new([1, 2, 6, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# tree.pretty_print
+tree = Tree.new([1, 2, 6.2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts
 tree.insert(68)
 tree.insert(1)
 tree.insert(30)
-tree.insert(0.1)
+tree.insert(6)
+tree.insert(5.3)
+tree.insert(5.33)
+tree.insert(5.31)
+tree.insert(6.11)
+tree.insert(4.8)
+tree.insert(6.1)
 # p tree.root
+tree.pretty_print
 puts puts
-tree.delete(9)
+tree.delete(67)
 tree.pretty_print
