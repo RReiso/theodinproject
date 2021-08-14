@@ -8,15 +8,15 @@ class Tree
     @root = build_tree(arr)
   end
 
-  def pretty_print(node = @root, prefix = '', is_left = true)
-    if node.right
-      pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false)
-    end
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-    if node.left
-      pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
-    end
-  end
+  # def pretty_print(node = @root, prefix = '', is_left = true)
+  #   if node.right
+  #     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false)
+  #   end
+  #   puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+  #   if node.left
+  #     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
+  #   end
+  # end
 
   def insert(value)
     new_node = Node.new(value)
@@ -36,42 +36,19 @@ class Tree
   end
 
   def delete(value, root = @root)
-    current = root
-    while current
-      if value > current.value
-        if current.right.value == value
-          current.right = remove_node(current.right)
-          return root
-        else
-          current = current.right
-        end
-      elsif value < current.value
-        if current.left.value == value
-          current.left = remove_node(current.left)
-          return root
-        else
-          current = current.left
-        end
-      else
-        # Remove root node
-        root = remove_node(root)
-        return root
-      end
+    return root if root.nil?
+
+    if value > root.value
+      root.right = delete(value, root.right)
+    elsif value < root.value
+      root.left = delete(value, root.left)
+    else
+      root = remove_node(root)
     end
-    puts 'The tree does not contain the given value'
+    root
   end
 
   private
-
-  def build_tree(arr)
-    return nil if arr.empty?
-
-    middle = arr.size / 2
-    root = Node.new(arr[middle])
-    root.left = build_tree(arr[0...middle])
-    root.right = build_tree(arr[middle + 1..-1])
-    root
-  end
 
   def remove_node(node)
     return node.right if node.left.nil?
@@ -88,6 +65,16 @@ class Tree
     node.right = delete(current.value, node.right)
     node
   end
+
+  def build_tree(arr)
+    return nil if arr.empty?
+
+    middle = arr.size / 2
+    root = Node.new(arr[middle])
+    root.left = build_tree(arr[0...middle])
+    root.right = build_tree(arr[middle + 1..-1])
+    root
+  end
 end
 
 tree = Tree.new([1, 2, 6.2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -103,7 +90,7 @@ tree.insert(6.11)
 tree.insert(4.8)
 tree.insert(6.1)
 # p tree.root
-tree.pretty_print
+# tree.pretty_print
 puts puts
-tree.delete(67)
-tree.pretty_print
+tree.delete(9999)
+# tree.pretty_print
