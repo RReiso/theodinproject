@@ -65,9 +65,9 @@ class Tree
     queue = [@root]
     until queue.empty?
       node = queue.shift
-      result.push(node.value)
-      queue.push(node.left) if node.left
-      queue.push(node.right) if node.right
+      result << node.value
+      queue << node.left if node.left
+      queue << node.right if node.right
     end
     result
   end
