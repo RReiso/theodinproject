@@ -60,16 +60,13 @@ class Tree
     end
   end
 
-  def level_order
-    result = []
-    queue = [@root]
-    until queue.empty?
-      node = queue.shift
-      result << node.value
-      queue << node.left if node.left
-      queue << node.right if node.right
-    end
-    result
+  def level_order(node = @root, queue = [],result = [])
+    result << node.value
+    queue << node.left if node.left
+    queue << node.right if node.right
+    return result if queue.empty?
+
+    level_order(queue.shift, queue, result)
   end
 
 def pretty_print(node = @root, prefix = '', is_left = true)
@@ -113,12 +110,9 @@ tree.insert(68)
 tree.insert(1)
 tree.insert(30)
 tree.insert(6)
-tree.insert(5.3)
-tree.insert(5.33)
-tree.insert(5.31)
-tree.insert(6.11)
+
 tree.insert(4.8)
-tree.insert(6.1)
+
 # p tree.root
 tree.pretty_print
 
