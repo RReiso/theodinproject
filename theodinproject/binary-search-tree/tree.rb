@@ -60,7 +60,23 @@ class Tree
     end
   end
 
+  def level_order
+    result = []
+    queue = [@root]
+    until queue.empty?
+      node = queue.shift
+      result.push(node.value)
+      queue.push(node.left) if node.left
+      queue.push(node.right) if node.right
+    end
+    result
+  end
 
+def pretty_print(node = @root, prefix = '', is_left = true)
+  pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+  puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+  pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+end
 
   private
 
@@ -105,11 +121,6 @@ tree.insert(4.8)
 tree.insert(6.1)
 # p tree.root
 tree.pretty_print
-puts puts
-tree.delete(9999)
-p tree.find(5)
-puts
-p tree.find(7)
-puts
-p tree.find(6345)
+
+p tree.level_order
 # tree.pretty_print
