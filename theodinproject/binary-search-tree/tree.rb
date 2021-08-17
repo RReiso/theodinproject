@@ -79,7 +79,6 @@ class Tree
   end
 
   def preorder(node = @root, result = [])
-    
     unless node.nil?
       result << node.value
       preorder(node.left, result)
@@ -89,13 +88,38 @@ class Tree
   end
 
    def postorder(node = @root, result = [])
-    
     unless node.nil?
       postorder(node.left, result)
       postorder(node.right, result)
       result << node.value
     end
     result
+  end
+
+  def height(node = @root, edges = 0, result = [])
+    return if node.nil?
+    return result << edges if node.left.nil? && node.right.nil?
+
+    edges += 1
+    height(node.left, edges, result) if node.left
+    height(node.right, edges, result) if node.right
+    result.max
+  end
+
+  def depth(node = @root, edges = 0, parent = @root, result = [])
+    return if node.nil?
+    return result << edges if parent == node
+
+    edges += 1
+    if result.empty?
+      depth(node, edges, parent.left, result) if parent.left
+      depth(node, edges, parent.right, result) if parent.right
+    end
+    result[0]
+  end
+
+   def rebalance
+    initialize(level_order)
   end
 
 def pretty_print(node = @root, prefix = '', is_left = true)
@@ -125,7 +149,7 @@ end
   def build_tree(arr)
     return nil if arr.empty?
 
-    middle = arr.size / 2
+    middle = (arr.size - 1) / 2
     root = Node.new(arr[middle])
     root.left = build_tree(arr[0...middle])
     root.right = build_tree(arr[middle + 1..-1])
@@ -135,12 +159,17 @@ end
 
 tree = Tree.new([1, 2, 6.2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts
+tree.pretty_print
+
 tree.insert(68)
 tree.insert(1)
 tree.insert(30)
 tree.insert(6)
 
 tree.insert(4.8)
+tree.insert(4.9)
+tree.insert(4.99)
+tree.insert(0.1)
 
 # p tree.root
 tree.pretty_print
@@ -150,3 +179,8 @@ p tree.level_order
 p tree.inorder
 p tree.preorder
 p tree.postorder
+
+tree.rebalance
+tree.pretty_print
+
+puts tree.height(tree.root.left.left.right.right)
