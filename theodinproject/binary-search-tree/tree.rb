@@ -8,16 +8,6 @@ class Tree
     @root = build_tree(arr)
   end
 
-  # def pretty_print(node = @root, prefix = '', is_left = true)
-  #   if node.right
-  #     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false)
-  #   end
-  #   puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-  #   if node.left
-  #     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
-  #   end
-  # end
-
   def insert(value)
     new_node = Node.new(value)
     root = @root
@@ -49,18 +39,18 @@ class Tree
   end
 
   def find(value, root = @root)
-    #  return root if root.nil?
+    return if root.nil?
 
     if value > root.value
-      root.right = find(value, root.right)
+      find(value, root.right)
     elsif value < root.value
-      root.left = find(value, root.left)
+      find(value, root.left)
     else
-      return root
+      root
     end
   end
 
-  def level_order(node = @root, queue = [],result = [])
+  def level_order(node = @root, queue = [], result = [])
     result << node.value
     queue << node.left if node.left
     queue << node.right if node.right
@@ -87,7 +77,7 @@ class Tree
     result
   end
 
-   def postorder(node = @root, result = [])
+  def postorder(node = @root, result = [])
     unless node.nil?
       postorder(node.left, result)
       postorder(node.right, result)
@@ -98,8 +88,8 @@ class Tree
 
   def height(node = @root, edges = 0, result = [])
     return if node.nil?
-    return result << edges if node.left.nil? && node.right.nil?
 
+    result << edges
     edges += 1
     height(node.left, edges, result) if node.left
     height(node.right, edges, result) if node.right
@@ -118,15 +108,32 @@ class Tree
     result[0]
   end
 
-   def rebalance
+  def balanced?(node = @root)
+    return if node.nil? || node.right.nil? || node.left.nil?
+
+    left = height(node.left)
+    right = height(node.right)
+
+    return false if (right - left).abs > 1
+
+    balanced?(node.right)
+    balanced?(node.left)
+    true
+  end
+
+  def rebalance
     initialize(level_order)
   end
 
-def pretty_print(node = @root, prefix = '', is_left = true)
-  pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-  puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-  pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
-end
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    if node.right
+      pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false)
+    end
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+    if node.left
+      pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
+    end
+  end
 
   private
 
@@ -156,31 +163,3 @@ end
     root
   end
 end
-
-tree = Tree.new([1, 2, 6.2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-puts
-tree.pretty_print
-
-tree.insert(68)
-tree.insert(1)
-tree.insert(30)
-tree.insert(6)
-
-tree.insert(4.8)
-tree.insert(4.9)
-tree.insert(4.99)
-tree.insert(0.1)
-
-# p tree.root
-tree.pretty_print
-
-p tree.level_order
-# tree.pretty_print
-p tree.inorder
-p tree.preorder
-p tree.postorder
-
-tree.rebalance
-tree.pretty_print
-
-puts tree.height(tree.root.left.left.right.right)
