@@ -1,25 +1,24 @@
-$visited_positions=[]
 
-# DIRECTIONS = [[1,2],[2,1],[2,-1]]
-# DIRECTIONS = [[1,2],[2,1],[2,-1],[-1,2],[1,-2]]
-DIRECTIONS = [[1,2],[2,1],[2,-1],[-1,2],[1,-2],[-2,1],[-1,-2],[-2,-1]]
-starting_position = [0,3]
 class Knight
+  DIRECTIONS = [[1,2],[2,1],[2,-1],[-1,2],[1,-2],[-2,1],[-1,-2],[-2,-1]]
+
   attr_reader :possible_moves,  :current_position
   attr_accessor :parent, :child_nodes
-  def initialize(current_position, destination,parent=nil)
+
+  def initialize(current_position, end_position, parent=nil)
     @current_position = current_position
-    @destination = destination
+    @end_position = end_position
     @parent = parent
-     @possible_moves = find_possible_moves 
-     @child_nodes = []
+    @child_nodes = []
     
   end
-
+  
   def play
-   
     
-    find_child_nodes 
+    
+    # @possible_moves = find_possible_moves 
+    parent = find_parent_of_ending_node
+    get_path(parent, @current_position)
     # p self.parent
     # p "visited positions #{$visited_positions}"
   end
@@ -39,75 +38,40 @@ end
 possible_moves
 end
 
-def find_child_nodes
-  $visited_positions << @current_position
-  # p "Possible moves #{@possible_moves} of node #{@current_position}"
+def find_parent_of_ending_node
+
   queue = [self]
-    knight = queue.shift
-    until knight.current_position == @destination
-      p "cure pose #{knight.current_position}"
-      p "moves #{knight.possible_moves}"
-      knight.possible_moves.each do |move|
-    # p "I am move #{move}"
-        if move != @destination
-          knight.child_nodes << a = Knight.new(move, @destination,knight)
+    node = queue.shift
+    while queue
+    
+      node.find_possible_moves.each do |position|
+ 
+        if position != @end_position
+          node.child_nodes << a = Knight.new(position, @end_position,node)
           queue<<a
         else
-      # p knight
-      get_path(knight)
+          return node
+
+      
     end
 
   end
-  knight=queue.shift
-  #  queue = [Knight.new(start)]
-  #   knight = queue.shift
-  #   until knight.current_position == destination
-  #     knight.possible_moves.each do |move|
-  #       knight.children << a = Knight.new(move, current)
-  #       queue << a
-  #     end
-  #     knight = queue.shift
-  #   end
-  #   knight
+  node=queue.shift
+  
 end
 end
 
-def traverse
-  queue = [self]
-  knight = queue.shift
- 
-  path = [@destination]
-  while knight && (knight.current_position !=@destination)
-    # p "this is parent #{knight.current_position}"
-    # puts
-    knight.child_nodes.each do |child|
-      p "CHILD #{child.current_position}"
-      queue << child
-    end
-    queue.each do |node|
-      if node.current_position == @destination
-        p "yey"
-        # p node
-        get_path(node)
-      end
-    end
-   
-    knight = queue.shift
-  end
-end
 
-def get_path(node)
-
-  path =[@destination]
-  # p node
-  p @current_position
-  while node.current_position !=@current_position
+def get_path(node,start_position )
+# Given node's child is the end_position
+  path =[@end_position]
+  while node.current_position !=start_position
     path.unshift(node.current_position)
     node = node.parent
   end
-  path.unshift(@current_position)
+  path.unshift(start_position)
   p path
-  exit
+  # exit
 end
 
 end
@@ -116,7 +80,7 @@ knight = Knight.new([0,3],[8,7])
 # p knight
 # p "I am #{knight} "
 knight.play
-
+# 
 
 
 
