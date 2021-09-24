@@ -9,7 +9,7 @@ def stock_picker(stock_prices)
   while prices.size > 1
     min_p = prices.min
     index_of_min = prices.index(min_p)
-    arr = prices[index_of_min..]
+    arr = prices[index_of_min..prices.length]
     max_p = arr.max
     if max_p - min_p > profit
       profit = max_p - min_p
